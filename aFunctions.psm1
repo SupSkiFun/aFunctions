@@ -13,7 +13,8 @@ Within the Object:
 3) The Object property is available if -IncludeObject was specified.  This property can be accessed
 by using .object or via Select-Object -ExpandProperty Object.  Both are shown in Example 4.
 
-For optimal JSON Output, return the object into a variable without specifying -IncludeObject.
+For optimal JSON Output:
+Return the object into a variable without specifying -IncludeObject (default).
 $myVar = Get-EC2Instance -InstanceId i-0e90783335830aaaa | Show-EC2Instance
 $jVar = $myVar | ConvertTo-Json -Depth 4
 .PARAMETER EC2Instance
