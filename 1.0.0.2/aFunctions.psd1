@@ -109,7 +109,7 @@ PrivateData = @{
         # ReleaseNotes of this module
         ReleaseNotes = 'Read examples for function use.  Module tested with
         AWS.Tools. 4.0.5.0  / PowerShell 7.0 / Windows 10 (1909) / Catalina 10.15.4 / CentOS 7.7.
-        Show-EC2Instance - Added PublicDNS Property.
+        Show-EC2Instance - Added PublicDNS Property.  Accounted for multiple .instances returned.
         PUT INFO FOR NEW AF HERE'
 
         # Prerelease string of this module

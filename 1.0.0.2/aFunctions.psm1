@@ -62,8 +62,9 @@ Function Show-EC2Instance
 
     Process
     {
-        foreach ($e in $EC2Instance)
+        foreach ($e in $EC2Instance.Instances)
         {
+            #Nested loop above ok?
             $lo = [aClass]::MakeSEC2IObj($e)
             if ($IncludeObject)
             {
