@@ -108,7 +108,7 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = 'Read examples for function use.  Module tested with
-        AWS.Tools. 4.0.5.0  / PowerShell 7.0 / Windows 10 / Catalina 10.15.4 / CentOS 7.7.'
+        AWS.Tools. 4.0.5.0  / PowerShell 7.0 / Windows 10 (1909) / Catalina 10.15.4 / CentOS 7.7.'
 
         # Prerelease string of this module
         # Prerelease = ''
