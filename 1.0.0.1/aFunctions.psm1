@@ -24,8 +24,7 @@ Mandatory. Output from AWS Get-EC2Instance (Module AWS.Tools.EC2). See Examples.
 Optional. If specified places the source EC2-Instance-Object within the Object
 NoteProperty of the PSCUSTOMOBJECT.  Useful for piping.  See Notes and Examples.
 .INPUTS
-AWS Instance from Get-EC2Instance:
-[Amazon.EC2.Model.Reservation]
+AWS Instance from Get-EC2Instance [Amazon.EC2.Model.Reservation]
 .OUTPUTS
 PSCUSTOMOBJECT SupSkiFun.AWS.EC2Instance.Info
 .EXAMPLE
@@ -43,7 +42,7 @@ $myVar = Get-EC2Instance -Region us-east-1 | Show-EC2Instance -IncludeObject
     ...then...
 Start all instances in $myVar with a Name beginning with "WEB" :
 ($myVar | Where-Object -Property Name -Match "^WEB").Object | Start-EC2Instance
-    ...alternative syntax to start all instances in $myVar with a Name beginning with "WEB" :...
+    ...an alternative syntax to start all instances in $myVar with a Name beginning with "WEB" :...
 $myvar | Where-Object -Property Name -Match "^WEB" | Select-Object -ExpandProperty Object | Start-EC2Instance
 .LINK
 Get-EC2Instance
