@@ -3,17 +3,17 @@
 Returns configuration information from EC2 Instances.
 .DESCRIPTION
 Returns a PSCUSTOMOBJECT of configuration information from EC2 Instances.  Optionally
-adds the source EC2-Instance-Object if the IncludeObject Parameter is specified.
+adds the source EC2-Instance-Object if the -IncludeObject Parameter is specified.
 .NOTES
 Within the Object:
 1) The Name Parameter will be empty if a name has not been specified.
 2) Tags can be seen by returning the object into a variable (e.g. $myVar), then $myVar.Tags
-3) The .Object property is available if -IncludeObject was specified.  This property can be accessed
+3) The Object property is available if -IncludeObject was specified.  This property can be accessed
 by using .object or via Select-Object -ExpandProperty Object.  Both are shown in Example 4.
 
 For optimal JSON Output, return the object into a variable without specifying -IncludeObject.
 $myVar = Get-EC2Instance -InstanceId i-0e90783335830aaaa | Show-EC2Instance
-$jVar = $myVar | ConvertTo-Json
+$jVar = $myVar | ConvertTo-Json -Depth 4
 .PARAMETER EC2Instance
 Mandatory. Output from AWS Get-EC2Instance (Module AWS.Tools.EC2). See Examples.
 [Amazon.EC2.Model.Reservation]
@@ -37,11 +37,13 @@ $myVar = Get-EC2Instance -InstanceId i-0e90783335830aaaa | Show-EC2Instance -Inc
 .EXAMPLE
 Return a custom object from all EC2 Instances in a region, including the source Object, into a variable:
 $myVar = Get-EC2Instance -Region us-east-1 | Show-EC2Instance -IncludeObject
-...then...
+    ...then...
 Start all instances in $myVar with a Name beginning with "WEB" :
 ($myVar | Where-Object -Property Name -Match "^WEB").Object | Start-EC2Instance
-...alternative syntax to start all instances in $myVar with a Name beginning with "WEB" :...
+    ...alternative syntax to start all instances in $myVar with a Name beginning with "WEB" :...
 $myvar | Where-Object -Property Name -Match "^WEB" | Select-Object -ExpandProperty Object | Start-EC2Instance
+.LINK
+Get-EC2Instance
 #>
 Function Show-EC2Instance
 {
@@ -66,7 +68,7 @@ Function Show-EC2Instance
                 ID = $e.instances.InstanceId
                 PrivateIP = $e.Instances.PrivateIpAddress
                 PublicIP = $e.Instances.PublicIpAddress
-                Type = $e.Instances.InstanceType
+                Type = $e.Instances.InstanceType.Value
                 SecurityGroupName = $e.Instances.SecurityGroups.GroupName
                 SecurityGroupID = $e.Instances.SecurityGroups.GroupId
                 Tags = $e.Instances.Tags
