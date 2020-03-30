@@ -1,3 +1,38 @@
+<#
+.SYNOPSIS
+Returns configuration information of EC2 Instances.
+.DESCRIPTION
+Returns a PSCUSTOMOBJECT of configuration information of EC2 Instances.  Optionally
+adds the source EC2-Instance-Object if the IncludeObject Parameter is specified.
+.NOTES
+
+.PARAMETER EC2Instance
+Mandatory. Output from AWS Get-EC2Instance (Module AWS.Tools.EC2). See Examples.
+[Amazon.EC2.Model.Reservation]
+.PARAMETER IncludeObject
+Optional. If specified places the source EC2-Instance-Object within the Object
+NoteProperty of the PSCUSTOMOBJECT.  Useful for piping.  See Notes and Examples.
+.INPUTS
+AWS Instance from Get-EC2Instance:
+[Amazon.EC2.Model.Reservation]
+.OUTPUTS
+PSCUSTOMOBJECT SupSkiFun.AWS.EC2Instance.Info
+.EXAMPLE
+Return a custom object from one EC2 Instance:
+Get-EC2Instance -InstanceId i-0e90783335830aaaa | Show-EC2Instance
+.EXAMPLE
+Return a custom object from two EC2 Instances into a variable:
+$myVar = Get-EC2Instance -InstanceId i-0e90783335830aaaa , i-0e20784445830bbbb | Show-EC2Instance
+.EXAMPLE
+Return a custom object from one EC2 Instance, including the source Object, into a variable:
+$myVar = Get-EC2Instance -InstanceId i-0e90783335830aaaa | Show-EC2Instance -IncludeObject
+.EXAMPLE
+Return a custom object from all EC2 Instances in a region, including the source Object, into a variable:
+$myVar = Get-EC2Instance -Region us-east-1 | Show-EC2Instance -IncludeObject
+...then...
+Start all instances with a Name starting with "WEB" :
+($a1 | Where-Object -Property Name -match "^WEB").Object | Start-EC2Instance
+#>
 Function Show-EC2Instance
 {
     [CmdletBinding()]
@@ -16,14 +51,15 @@ Function Show-EC2Instance
         foreach ($e in $EC2Instance)
         {
             $lo = [pscustomobject]@{
-                Name = ($e.Instances.Tags | ? {$_.Key -match "Name"}).Value
-                id = $e.instances.InstanceId
+                Name = ($e.Instances.Tags |
+                    Where-Object {$_.Key -match "Name"}).Value
+                ID = $e.instances.InstanceId
                 PrivateIP = $e.Instances.PrivateIpAddress
                 PublicIP = $e.Instances.PublicIpAddress
                 Type = $e.Instances.InstanceType
                 SecurityGroupName = $e.Instances.SecurityGroups.GroupName
                 SecurityGroupID = $e.Instances.SecurityGroups.GroupId
-                Tags = $e.Instances.Tags  # Make an Array of Hash Tags or just leave?
+                Tags = $e.Instances.Tags
                 State = $e.Instances.State.Name
                 SubnetID = $e.Instances.SubnetId
                 VpcID = $e.Instances.VpcId
@@ -31,7 +67,8 @@ Function Show-EC2Instance
 
             if ($IncludeObject)
             {
-                $lo | Add-Member  -Name Object -Value $e -MemberType NoteProperty
+                $lo |
+                    Add-Member  -Name Object -Value $e -MemberType NoteProperty
             }
             $lo.PSObject.TypeNames.Insert(0,'SupSkiFun.AWS.EC2Instance.Info')
             $lo
