@@ -1,0 +1,9 @@
+$vpcs = Get-EC2Vpc
+$subs = Get-EC2Subnet
+$routes = Get-EC2RouteTable
+
+$subs | ? vpcid -eq $vpcs[0].VpcId
+
+$routes[0].Routes
+$routes[0].Associations
+$routes.Associations|? subnetid -match $subs[1].SubnetId
