@@ -1,0 +1,18 @@
+EVERYTHING IN 1.2.3.4 NEEDS TO BE UPDATED!
+PSD1!  PSM1!  ADD ADD A FUNCTION OR TWO!
+
+$vpcs = Get-EC2Vpc
+$subs = Get-EC2Subnet
+$routes = Get-EC2RouteTable
+
+
+DNS Hostnames enabled?
+Subnet assign IPs enabled?
+
+Get-EC2VpcAttribute -VpcId $vpcs[0].VpcId -Attribute enableDnsHostnames
+
+$subs | ? vpcid -eq $vpcs[0].VpcId
+
+$routes[0].Routes
+$routes[0].Associations
+$routes.Associations|? subnetid -match $subs[1].SubnetId
