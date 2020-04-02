@@ -16,6 +16,7 @@ class aClass
             State = $obj.State.Name
             SubnetID = $obj.SubnetId
             VpcID = $obj.VpcId
+            Object = $obj
         }
         $lo.PSObject.TypeNames.Insert(0,'SupSkiFun.AWS.EC2Instance.Info')
         return $lo
