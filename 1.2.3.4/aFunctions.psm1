@@ -39,7 +39,7 @@ Function Show-EC2Instance
     Param
     (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        [Amazon.EC2.Model.Reservation[]] $EC2Instance,
+        [Amazon.EC2.Model.Reservation[]] $EC2Instance
     )
 
     Process
