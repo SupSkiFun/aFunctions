@@ -73,19 +73,19 @@ AWS VPC from Get-EC2Vpc [Amazon.EC2.Model.Vpc]
 PSCUSTOMOBJECT SupSkiFun.AWS.VPC.Info
 .EXAMPLE
 Return a custom object from one VPC:
-Get-EC2Vpc -VpcId vpc-77a1b77053c67aaaa | Show-EC2VPC
+Get-EC2Vpc -VpcId vpc-77a1b77053c67aaaa | Show-EC2Vpc
 .EXAMPLE
 Return a custom object from two VPCs into a variable:
-$myVar = Get-EC2Vpc -VpcId vpc-77a1b77053c67aaaa , vpc-77a1b77053c67bbbb  | Show-EC2VPC
+$myVar = Get-EC2Vpc -VpcId vpc-77a1b77053c67aaaa , vpc-77a1b77053c67bbbb  | Show-EC2Vpc
 .EXAMPLE
 Return a custom object from one VPC, converting the output to JSON:
-$myVar = Get-EC2Vpc -VpcId vpc-77a1b77053c67aaaa | Show-EC2VPC
+$myVar = Get-EC2Vpc -VpcId vpc-77a1b77053c67aaaa | Show-EC2Vpc
 $jVar = $myVar | Select-Object * -ExcludeProperty Object | ConvertTo-Json -Depth 4
 .LINK
 Get-EC2Vpc
 #>
 
-Function Show-EC2VPC
+Function Show-EC2Vpc
 {
     [CmdletBinding()]
 
