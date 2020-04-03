@@ -109,8 +109,8 @@ PrivateData = @{
         # ReleaseNotes of this module
         ReleaseNotes = 'Read examples for function use.  Module tested with
         AWS.Tools. 4.0.5.0  / PowerShell 7.0 / Windows 10 (1909) / Catalina 10.15.4 / CentOS 7.7.
-        Show-EC2Instance - Removed -IncludeObject parameter.  Object is now included by default.
-        INPUT FOR NEW VPC AF?'
+        Modified Show-EC2Instance. Removed -IncludeObject parameter.  Object is now included by default.
+        Added Show-EC2VPC.  Displays VPCs and their affiliated subnets.'
         # Prerelease string of this module
         # Prerelease = ''
 

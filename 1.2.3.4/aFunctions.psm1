@@ -46,7 +46,7 @@ Function Show-EC2Instance
     {
         foreach ($e in $EC2Instance.Instances)
         {
-            $lo = [aClass]::MakeSEC2IObj($e)
+            $lo = [aClass]::MakeEC2IObj($e)
             $lo
         }
     }
