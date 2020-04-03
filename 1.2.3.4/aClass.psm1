@@ -32,9 +32,10 @@ class aClass
             DhcpOptionsId = $obj.DhcpOptionsId
             IsDefault = $obj.IsDefault
             State = $obj.State.Value
-            OwnerId = $obj.OwnerId
+            Tags = $obj.Tags
             DnsHostNames = $exh.'DnsHostNames'
             DnsResolution = $exh.'DnsResolution'
+            OwnerId = $obj.OwnerId
             Object = $obj
         }
         $lo.PSObject.TypeNames.Insert(0,'SupSkiFun.AWS.VPC.Info')
