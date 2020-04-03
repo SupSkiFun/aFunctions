@@ -7,11 +7,11 @@ Returns configuration information from EC2 Instances.
 Returns a PSCUSTOMOBJECT of configuration information from EC2 Instances.
 .NOTES
 1) The object provided from Get-EC2Instance is stored in the NoteProperty Object.
-2) The Name NoteProperty will be empty if a name has not been specified.
+2) The Name NoteProperty will be empty if an EC2 Instance name has not been specified.
 3) Tags can be seen by returning the object into a variable (e.g. $myVar), then $myVar.Tags
 4) Optimal JSON output is demonstrated in Example 4.
 .PARAMETER EC2Instance
-Mandatory. Output from AWS Get-EC2Instance (Module AWS.Tools.EC2). See Examples.
+Mandatory. Output from AWS Get-EC2Instance (Module: AWS.Tools.EC2). See Examples.
 [Amazon.EC2.Model.Reservation]
 .INPUTS
 AWS Instance from Get-EC2Instance [Amazon.EC2.Model.Reservation]
@@ -54,6 +54,37 @@ Function Show-EC2Instance
     }
 }
 
+<#
+.SYNOPSIS
+Returns configuration information from VPC(s).
+.DESCRIPTION
+Returns a PSCUSTOMOBJECT of configuration information from VPC(s).
+.NOTES
+1) The object provided from Get-EC2Vpc is stored in the NoteProperty Object.
+2) The Name NoteProperty will be empty if a VPC name has not been specified.
+3) Tags can be seen by returning the object into a variable (e.g. $myVar), then $myVar.Tags
+4) Optimal JSON output is demonstrated in Example 3.
+.PARAMETER EC2Instance
+Mandatory. Output from AWS Get-EC2Vpc (Module: AWS.Tools.EC2). See Examples.
+[Amazon.EC2.Model.Vpc]
+.INPUTS
+AWS VPC from Get-EC2Vpc [Amazon.EC2.Model.Vpc]
+.OUTPUTS
+PSCUSTOMOBJECT SupSkiFun.AWS.VPC.Info
+.EXAMPLE
+Return a custom object from one VPC:
+Get-EC2Vpc -VpcId vpc-77a1b77053c67aaaa | Show-EC2VPC
+.EXAMPLE
+Return a custom object from two VPCs into a variable:
+$myVar = Get-EC2Vpc -VpcId vpc-77a1b77053c67aaaa , vpc-77a1b77053c67bbbb  | Show-EC2VPC
+.EXAMPLE
+Return a custom object from one VPC, converting the output to JSON:
+$myVar = Get-EC2Vpc -VpcId vpc-77a1b77053c67aaaa | Show-EC2VPC
+$jVar = $myVar | Select-Object * -ExcludeProperty Object | ConvertTo-Json -Depth 4
+.LINK
+Get-EC2Vpc
+#>
+
 Function Show-EC2VPC
 {
     [CmdletBinding()]
@@ -74,7 +105,7 @@ Function Show-EC2VPC
                 DnsHostNames = $dh
                 DnsResolution = $ds
             }
-            $lo = [aClass]::MakeVPCObj( $vp , $vh )
+            $lo = [aClass]::MakeVPCObj($vp , $vh)
             $lo
         }
     }

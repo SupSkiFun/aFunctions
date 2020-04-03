@@ -1,3 +1,10 @@
+Future ideas
+
+More info on subnets
+More info on routes
+
+Info below
+
 $subs = Get-EC2Subnet
 $routes = Get-EC2RouteTable
 
