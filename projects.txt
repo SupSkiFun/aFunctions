@@ -1,5 +1,9 @@
 Future ideas
 
+Extend EC2 AF with EC2 Status
+Use Get-EC2InstanceStatus - specify id?
+
+
 More info on subnets
 More info on routes
 
