@@ -1,4 +1,17 @@
-Future ideas
+Fixes:
+
+change this line
+
+            Name = ($obj.Tags |
+                Where-Object {$_.Key -match "Name"}).Value
+
+to
+
+            Name = ($obj.Tags |
+                Where-Object {$_.Key -eq "Name"}).Value
+
+
+Future ideas:
 
 Extend EC2 AF with EC2 Status
 Use Get-EC2InstanceStatus - specify id?
