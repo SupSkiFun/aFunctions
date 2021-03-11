@@ -9,11 +9,12 @@ Class Route53HotRod
             IP = $rs.ResourceRecords.Value
             Type = $rs.Type
             TTL = $rs.TTL
-        } 
+        }
+        $lo.PSObject.TypeNames.Insert(0,'SupSkiFun.AWS.R53.Record.Info')  
         return $lo
     }
     
-    static [pscustomobject] MakeR53Obj ([psobject] $rc, [psobject]$rv, [string]$HostedZoneId)
+    static [pscustomobject] MakeR53Obj ([psobject] $rc, [psobject] $rv, [string] $HostedZoneId)
     {
         $lo = [pscustomobject]@{
             FQDN = $rc.ResourceRecordSet.Name
@@ -25,7 +26,8 @@ Class Route53HotRod
             JobID = $rv.ID
             Status = $rv.Status
             SubmittedAt = $rv.SubmittedAt
-        } 
+        }
+        $lo.PSObject.TypeNames.Insert(0,'SupSkiFun.AWS.R53.A.Record.Info') 
         return $lo
     }
     
@@ -81,6 +83,47 @@ Function Set-R53ARecord
     }
 }
 
+<#
+.SYNOPSIS
+Formats returned records from a Route 53 Hosted Zone.
+.DESCRIPTION
+Creates a PSCUSTOMOBJECT of returned records from a Route 53 Hosted Zone.
+The custom object is much easier to view and work with.
+.NOTES
+The Get-R53ResourceRecordSet has a MaxLimit parameter that might need adjusting for large zones.
+.PARAMETER RecordSets
+Mandatory. Output from AWS Get-R53ResourceRecordSet (Module: AWS.Tools.Route53). See Examples.
+[Amazon.Route53.Model.ListResourceRecordSetsResponse]
+.INPUTS
+AWS Route 53 Records from Get-R53ResourceRecordSet
+[Amazon.Route53.Model.ListResourceRecordSetsResponse]
+.OUTPUTS
+PSCUSTOMOBJECT SupSkiFun.AWS.R53.Record.Info
+.EXAMPLE
+Please Read.
+
+First:  Return Specific Zone into a variable:
+$myZone = Get-R53HostedZoneList | Where-Object -Property Name -Match "myDomain.org" 
+
+Second:  Using a specific zone, retrieve records putting them into a pscustomobject.
+$myVar = Get-R53ResourceRecordSet -HostedZoneId $myZone.Id | Show-R53Record 
+.EXAMPLE
+Slightly different, piping the zone:
+
+First:  Return Specific Zone into a variable:
+$myZone = Get-R53HostedZoneList | Where-Object -Property Name -Match "myDomain.org" 
+
+Second:  Using a specific zone, retrieve records putting them into a pscustomobject.
+$myVar = $myZone | Get-R53ResourceRecordSet  | Show-R53Record
+.EXAMPLE
+HostedZoneID can be submitted manually if preferred:
+
+$myVar = Get-R53ResourceRecordSet -HostedZoneId '/hostedzone/BigOldStringOfChars' | Show-R53Record 
+.LINK
+Get-R53HostedZoneList
+Get-R53ResourceRecordSet
+#>
+
 Function Show-R53Record
 {
     [CmdletBinding()]
@@ -100,55 +143,3 @@ Function Show-R53Record
         }
     }
 }
-
-
-<#
-    Verb = submit or set?
-    Require ZoneID = allow pipe type of HostedZoneId [string]
-    Hard Code A
-    ALLOW CREATE, DELETE - Parameter  -Action
-   
-    Allow TTL - set default of 300 [int32]
-    Require FQDN [string]
-    Require IP [ipaddress]
-    Return object of input values + from AWS, ID, Status, SubmittedAt
-
-$z = Get-R53HostedZoneList | ? name -match supskifun    # Use as an example in Help
-
-
-    Seperate AF for Get - different input values required - different output values to produce
-
-
-$ret = Edit-R53ResourceRecordSet -HostedZoneId $z.Id -ChangeBatch_Change $rec
-
-
-
-
-DELETING
-$rec.Action="DELETE"
-Edit-R53ResourceRecordSet -HostedZoneId $z.Id -ChangeBatch_Change $rec
-
-
-QUERYING
-
-$sta = Get-R53Change -id $ret.id  (Where $ret is the return from a submitted request)
-
-$z = Get-R53HostedZoneList | ? name -match supskifun    # Use as an example in Help
-$dd = Get-R53ResourceRecordSet  -HostedZoneId $z.Id
-$dd.ResourceRecordSets
-$dd.ResourceRecordSets | select name, type
-$dd.ResourceRecordSets.Where({$_.type -match A)}
-$dd.ResourceRecordSets.Where({$_.type -match A})
-$dd.ResourceRecordSets.Where({$_.type -match 'A'})
-$dd.ResourceRecordSets.Where({$_.type -match 'A'}) | select name, resourcerecords
-$ee = $dd.ResourceRecordSets.Where({$_.type -match 'A'}) | select name, resourcerecords
-$ee[0].ResourceRecords
-$ee[-1].ResourceRecords
-USE THIS
-$dd.ResourceRecordSets | select name, type, @{n="info";e={$_.ResourceRecords.Value}}
-OR
-$kk = $dd.ResourceRecordSets.Where({$_.type -eq 'A'}) | select name, type, @{n="info";e={$_.ResourceRecords.Value}}
-STILL BETTER - CONVERTS TO JSON
-$kk = $dd.ResourceRecordSets.Where({$_.type -eq 'A'}) | select Name, @{n="Type";e={$_.Type.Value}}, @{n="Info";e={$_.ResourceRecords.Value}},TTL
-
-#>
