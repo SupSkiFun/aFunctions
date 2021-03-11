@@ -28,22 +28,26 @@ Function Set-R53ARecord
 
     Param
     (
-        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
-        [String] $HostedZoneId,
 
         [Parameter(Mandatory=$true)]
         [ValidateSet("CREATE", "DELETE")]
-        [String] $Action,
+        [string] $Action,
 
         [Parameter(Mandatory=$true)]
-        [string] $FQDN
+        [string] $FQDN,
+
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [string] $HostedZoneId,
+
+        [Parameter(Mandatory=$true)]
+        [ipaddress] $IP
     )
 
     Process
     {
         foreach ($e in $EC2Instance.Instances)
         {
-            $lo = [aClass]::MakeEC2IObj($e)
+            $lo = [aClss]::MakeEC2IObj($e)
             $lo
         }
     }
