@@ -1,0 +1,58 @@
+Class Route53Mod
+{
+    static $Type = 'A'
+}
+
+<#
+    Verb = submit or set?
+    Require ZoneID = allow pipe type of HostedZoneId [string]
+    Hard Code A
+    ALLOW CREATE, DELETE - Parameter  -Action
+   
+    Allow TTL - set default of 300 [int32]
+    Require FQDN [string]
+    Require IP [ipaddress]
+    Return object of input values + from AWS, ID, Status, SubmittedAt
+
+    Seperate AF for Get - different input values required - different output values to produce
+
+#>
+$z = Get-R53HostedZoneList | ? name -match supskifun    # Use as an example in Help
+$rec = [Amazon.Route53.Model.Change]::new()
+$rec.Action="CREATE"
+$rr= [Amazon.Route53.Model.ResourceRecordSet]::new()
+$rr.Name="bogus3.supskifun.net"
+$rr.Type="A"
+$rr.TTL = 600
+$rr.ResourceRecords.Add(@{Value="172.17.17.17"})
+$rec.ResourceRecordSet=$rr
+$ret = Edit-R53ResourceRecordSet -HostedZoneId $z.Id -ChangeBatch_Change $rec
+$sta = Get-R53Change -id $ret.id
+
+<#
+
+DELETING
+$rec.Action="DELETE"
+Edit-R53ResourceRecordSet -HostedZoneId $z.Id -ChangeBatch_Change $rec
+
+
+QUERYING
+
+$dd = Get-R53ResourceRecordSet  -HostedZoneId $z.Id
+$dd.ResourceRecordSets
+$dd.ResourceRecordSets | select name, type
+$dd.ResourceRecordSets.Where({$_.type -match A)}
+$dd.ResourceRecordSets.Where({$_.type -match A})
+$dd.ResourceRecordSets.Where({$_.type -match 'A'})
+$dd.ResourceRecordSets.Where({$_.type -match 'A'}) | select name, resourcerecords
+$ee = $dd.ResourceRecordSets.Where({$_.type -match 'A'}) | select name, resourcerecords
+$ee[0].ResourceRecords
+$ee[-1].ResourceRecords
+USE THIS
+$dd.ResourceRecordSets | select name, type, @{n="info";e={$_.ResourceRecords.Value}}
+OR
+$kk = $dd.ResourceRecordSets.Where({$_.type -eq 'A'}) | select name, type, @{n="info";e={$_.ResourceRecords.Value}}
+STILL BETTER - CONVERTS TO JSON
+$kk = $dd.ResourceRecordSets.Where({$_.type -eq 'A'}) | select Name, @{n="Type";e={$_.Type.Value}}, @{n="Info";e={$_.ResourceRecords.Value}}
+
+#>
