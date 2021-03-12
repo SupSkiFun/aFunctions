@@ -12,13 +12,13 @@
 RootModule = 'aFunctions.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.2.3.4'
+ModuleVersion = '2.1.2.3'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
 
 # ID used to uniquely identify this module
-GUID = '731a7774-d503-45a5-a42e-9040ffc333ab'
+GUID = '731a7774-d503-4767-a42e-9040ggc334cd'
 
 # Author of this module
 Author = 'Joe Acosta'
@@ -27,7 +27,7 @@ Author = 'Joe Acosta'
 CompanyName = 'SupSkiFun'
 
 # Copyright statement for this module
-Copyright = '(c) 2020 Joe Acosta. All rights reserved.'
+Copyright = '(c) 2021 Joe Acosta. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'Various functions for extending the functionality of AWS PowerShell Tools.'
@@ -69,7 +69,7 @@ RequiredModules = @('AWS.Tools.EC2')
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = 'Show-EC2Instance' , 'Show-EC2Vpc'
+FunctionsToExport = 'Set-R53ARecord', 'Show-EC2Instance' , 'Show-EC2Vpc' , 'Show-R53ARecord'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'
@@ -95,7 +95,7 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = 'AWS', 'EC2' , 'VPC'
+        Tags = 'AWS', 'EC2' , 'R53' ,'VPC'
 
         # A URL to the license for this module.
         # LicenseUri = ''
@@ -108,9 +108,8 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = 'Read examples for function use.  Module tested with
-        AWS.Tools. 4.0.5.0  / PowerShell 7.0 / Windows 10 (1909) / Catalina 10.15.4 / CentOS 7.7.
-        Modified Show-EC2Instance. Removed -IncludeObject parameter.  Object is now included by default.
-        Added Show-EC2VPC.  Displays VPC information.'
+        AWS.Tools. 4.1.9.0  / PowerShell 7.0 / Windows 10 (20H2) / CentOS 7.9.
+        Added Set-R53ARecord and Show-R53ARecord.'
         # Prerelease string of this module
         # Prerelease = ''
 
