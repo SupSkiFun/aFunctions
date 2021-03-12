@@ -113,7 +113,7 @@ Show-R53Record
 
 Function Set-R53ARecord
 {
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess = $True, ConfirmImpact = "High")]
 
     Param
     (
@@ -136,11 +136,14 @@ Function Set-R53ARecord
 
     Process
     {
-        $rr = [Route53HotRod]::MakeR53ResRec($FQDN, $TTL, $IP)
-        $rc = [Route53HotRod]::MakeR53Change($Action, $rr)
-        $rv = Edit-R53ResourceRecordSet -HostedZoneId $HostedZoneId -ChangeBatch_Change $rc
-        $lo = [Route53HotRod]::MakeR53Obj($rc, $rv , $HostedZoneId)
-        $lo
+        if ($pscmdlet.ShouldProcess($FQDN, $Action))
+        {
+            $rr = [Route53HotRod]::MakeR53ResRec($FQDN, $TTL, $IP)
+            $rc = [Route53HotRod]::MakeR53Change($Action, $rr)
+            $rv = Edit-R53ResourceRecordSet -HostedZoneId $HostedZoneId -ChangeBatch_Change $rc
+            $lo = [Route53HotRod]::MakeR53Obj($rc, $rv , $HostedZoneId)
+            $lo
+        }
     }
 }
 
