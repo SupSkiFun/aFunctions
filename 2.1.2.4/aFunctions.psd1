@@ -12,13 +12,13 @@
 RootModule = 'aFunctions.psm1'
 
 # Version number of this module.
-ModuleVersion = '2.1.2.3'
+ModuleVersion = '2.1.2.4'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
 
 # ID used to uniquely identify this module
-GUID = '731a7774-d503-4767-a42e-90401ac334cd'
+GUID = '731a7774-d503-4767-a42e-90401ac355ee'
 
 # Author of this module
 Author = 'Joe Acosta'
