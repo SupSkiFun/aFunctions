@@ -108,7 +108,7 @@ PrivateData = @{
 
         # ReleaseNotes of this module
         ReleaseNotes = 'Read examples for function use.  Module tested with
-        AWS.Tools. 4.1.9.0  / PowerShell 7.0 / Windows 10 (20H2) / CentOS 7.9.
+        AWS.Tools.[EC2,VPC,Route53] 4.1.9.0  / PowerShell 7.1 / Windows 10 (20H2) / CentOS 7.9 / Ubuntu 20.10
         Added Set-R53ARecord and Show-R53ARecord.'
         # Prerelease string of this module
         # Prerelease = ''
