@@ -155,7 +155,7 @@ Function Show-EC2Instance
 .SYNOPSIS
 Returns a decoded IAM Policy Document.
 .DESCRIPTION
-Returns a PSCUSTOMOBJECT of a  decoded IAM Policy Document.
+Returns a PSCUSTOMOBJECT of a decoded IAM Policy Document.
 .NOTES
 1. Requires System.Web.HttpUtility to decode the policy document.
 2. DefaultDisplayPropertySet = "Document"
@@ -177,6 +177,7 @@ $myPol = Get-IAMPolicyVersion -PolicyArn arn:aws:iam::012345678901:policy/my_cus
 $myVar = $myPol | Show-IAMPolicyDocument
 $myVar
 $myVar.Document
+$myVar.Document | ConvertFrom-Json -Depth 12  | ConvertTo-Json -Depth 12
 .EXAMPLE
 Please Read:
 
@@ -198,14 +199,14 @@ Function Show-IAMPolicyDocument
         [Amazon.IdentityManagement.Model.PolicyVersion] $Policy
     )
 
-    Process 
+    Process
     {
-        $pd = [System.Web.HttpUtility]::UrlDecode($ppp.Document)
+        $pd = [System.Web.HttpUtility]::UrlDecode($policy.Document)
         $lo = [aclass]::MakeIAMDObj($policy, $pd)
         $lo
     }
 
-    End 
+    End
     {
         $TypeData = @{
             TypeName = 'SupSkiFun.AWS.IAMPolDoc.Info'
