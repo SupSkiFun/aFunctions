@@ -153,6 +153,70 @@ Function Show-EC2Instance
 
 <#
 .SYNOPSIS
+Returns a decoded IAM Policy Document.
+.DESCRIPTION
+Returns a PSCUSTOMOBJECT of a  decoded IAM Policy Document.
+.NOTES
+1. Requires System.Web.HttpUtility to decode the policy document.
+2. DefaultDisplayPropertySet = "Document"
+            To see all properties, issue either:
+                $myVar | Format-List -Property *
+                $myVar | Select-Object -Property *
+.PARAMETER $Policy
+Mandatory. Output from AWS Get-IAMPolicyVersion (Module: AWS.Tools.IdentityManagement). See Examples.
+[Amazon.IdentityManagement.Model.PolicyVersion]
+.INPUTS
+AWS IAM Policy from Get-IAMPolicyVersion [Amazon.IdentityManagement.Model.PolicyVersion]
+.OUTPUTS
+PSCUSTOMOBJECT SupSkiFun.AWS.IAMPolDoc.Info
+.EXAMPLE
+Please Read:
+
+Return the IAM Policy Document Only (default display):
+$myPol = Get-IAMPolicyVersion -PolicyArn arn:aws:iam::012345678901:policy/my_custom_policy -VersionId v1
+$myVar = $myPol | Show-IAMPolicyDocument
+$myVar
+$myVar.Document
+.EXAMPLE
+Please Read:
+
+Return the IAM Policy Document and related information (full display):
+$myPol = Get-IAMPolicyVersion -PolicyArn arn:aws:iam::012345678901:policy/my_custom_policy -VersionId v3
+$myVar = $myPol | Show-IAMPolicyDocument
+$myVar | fl *
+.LINK
+Get-IAMPolicyVersion
+#>
+
+Function Show-IAMPolicyDocument
+{
+    [CmdletBinding()]
+
+    Param
+    (
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [Amazon.IdentityManagement.Model.PolicyVersion] $Policy
+    )
+
+    Process 
+    {
+        $pd = [System.Web.HttpUtility]::UrlDecode($ppp.Document)
+        $lo = [aclass]::MakeIAMDObj($policy, $pd)
+        $lo
+    }
+
+    End 
+    {
+        $TypeData = @{
+            TypeName = 'SupSkiFun.AWS.IAMPolDoc.Info'
+            DefaultDisplayPropertySet = "Document"
+        }
+        Update-TypeData @TypeData -Force
+    }
+}
+
+<#
+.SYNOPSIS
 Formats returned records from a Route 53 Hosted Zone.
 .DESCRIPTION
 Creates a PSCUSTOMOBJECT of returned records from a Route 53 Hosted Zone.
