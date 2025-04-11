@@ -24,6 +24,19 @@ class aClass
         return $lo
     }
 
+    static [PSCustomObject] MakeIAMDObj ([psobject] $pol, [string] $doc)
+    {
+        $lo = [PSCustomObject]@{
+            CreateDate = $pol.CreateDate
+            VersionId = $pol.VersionId
+            IsDefault = $pol.IsDefaultVersion
+            Document = $doc
+        }
+        $lo.PSObject.TypeNames.Insert(0,'SupSkiFun.AWS.IAMPolDoc.Info')
+        return $lo
+
+    }
+
     static [psobject] MakeR53Change ([string] $Action, [psobject] $rr)
     {
         $rc = [Amazon.Route53.Model.Change]::new()
