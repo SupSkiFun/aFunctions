@@ -1,4 +1,4 @@
-using module .\aClass.psm1
+using module ./aClass.psm1
 <#
 .SYNOPSIS
 Removes S3 Object Versions that are not current; retains specified least old versions.
